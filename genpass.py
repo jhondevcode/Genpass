@@ -27,7 +27,7 @@ def help():
     info("size    size=n                  Sets the size of the string to generate")
 
 
-class StringTokenizer:
+class ArgumentProcessor:
 
     def __init__(self, tl: list):
         self.__list_tokens = tl
@@ -110,7 +110,7 @@ def main(args: list):
         if args[0] == '--help' or args[0] == '-h':
             help()
         else:
-            params, values = StringTokenizer(args).process()
+            params, values = ArgumentProcessor(args).process()
             if "size" in values:
                 generator = Genpass()
                 if '-es' in params or '--enable-symbols' in params:
