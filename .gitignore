@@ -1,0 +1,17 @@
+# created by virtualenv automatically
+
+# Virtual environment on linux
+/bin
+/lib
+
+# Virtual environment on windows
+/Scripts
+/Lib
+
+pyvenv.cfg
+
+# Compilation files
+__pycache__
+/dist
+/build
+
