@@ -14,4 +14,6 @@ pyvenv.cfg
 __pycache__
 /dist
 /build
+oconsole.spec
+genpass.spec
 
