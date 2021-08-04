@@ -1,0 +1,6 @@
+# Production dependencies
+colorama>=0.4.4
+
+# Development dependencies
+# pyinstaller>=4.5
+
