@@ -17,3 +17,5 @@ __pycache__
 oconsole.spec
 genpass.spec
 
+# Visual studio files
+/.vscode
