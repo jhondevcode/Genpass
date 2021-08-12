@@ -44,8 +44,6 @@ class ArgumentProcessor:
                 if '=' in item:
                     chunks = item.split("=")
                     values[chunks[0]] = chunks[1]
-                else:
-                    error(f"Error: no se reconoce \"{item}\"")
         return tuple(params), values
 
 
@@ -122,9 +120,9 @@ def main(args: list):
                 generator.set_size(int(values['size']))
                 success(generator.execute())
             else:
-                error("Error: no se ha especificado un tamaño valido")
+                error("Error: a valid size was not specified")
     else:
-        error("Error: no se han especificado argumentos")
+        error("Error: no arguments specified")
 
 
 if __name__ == '__main__':
