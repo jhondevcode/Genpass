@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import sys
 from colorama import Fore, init
 from random import choice
