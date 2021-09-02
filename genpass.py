@@ -31,6 +31,8 @@ def help():
 
 
 class ArgumentProcessor:
+    """This rudimentary class is in charge of processing the command line
+    arguments"""
 
     def __init__(self, tl: list):
         self.__list_tokens = tl
@@ -41,25 +43,29 @@ class ArgumentProcessor:
         for item in self.__list_tokens:
             if item.startswith("--"):
                 params.append(item)
-            elif item[0] == '-' and item[1] != '-':
+            elif item[0] == "-" and item[1] != "-":
                 params.append(item)
             else:
-                if '=' in item:
+                if "=" in item:
                     chunks = item.split("=")
                     values[chunks[0]] = chunks[1]
         return tuple(params), values
 
 
 class Genpass:
+    """This class is in charge of generating the text strings with random
+    characters"""
 
     def __init__(self):
-        # default size
-        self.__types = {'lower': True, 'upper': False, 'symbol': False, 'number': False}
-        self.__size = 10
-        self.__ranges = {}
+        # default types
+        self.__types = {"lower": True, "upper": False,
+                        "symbol": False, "number": False}
+        self.__size = 10  # default size
+        self.__ranges = {}  # default ranges
 
     def __regist_values(self, key, value):
-        """Logs a range only once in memory to avoid wasting processor cycles unnecessarily"""
+        """Logs a range only once in memory to avoid wasting processor cycles
+        unnecessarily"""
         self.__ranges[key] = value
 
     def __is_registered(self, key) -> bool:
@@ -81,7 +87,10 @@ class Genpass:
     def __generate_symbol(self) -> str:
         """Returns an ASCII symbol"""
         if not self.__is_registered("symbol"):
-            self.__regist_values("symbol", [range(32, 48), range(58, 65), range(91, 97), range(123, 127)])
+            self.__regist_values(
+                "symbol", [range(32, 48), range(58, 65),
+                           range(91, 97), range(123, 127)]
+            )
         return choice(choice(self.__ranges["symbol"]))
 
     def __generate_number(self) -> str:
@@ -97,13 +106,13 @@ class Genpass:
             keys = list(self.__types.keys())
             type = choice(keys)
             enabled = self.__types[type]
-        if type == 'upper':
+        if type == "upper":
             return self.__generate_upper()
-        elif type == 'lower':
+        elif type == "lower":
             return self.__generate_lower()
-        elif type == 'symbol':
+        elif type == "symbol":
             return self.__generate_symbol()
-        elif type == 'number':
+        elif type == "number":
             return self.__generate_number()
         else:
             return 32
@@ -112,35 +121,35 @@ class Genpass:
         self.__size = size
 
     def enable(self, e_type: str):
-        if e_type == 'uppercase':
-            self.__types['upper'] = True
-        elif e_type == 'symbols':
-            self.__types['symbol'] = True
-        elif e_type == 'numbers':
-            self.__types['number'] = True
+        if e_type == "uppercase":
+            self.__types["upper"] = True
+        elif e_type == "symbols":
+            self.__types["symbol"] = True
+        elif e_type == "numbers":
+            self.__types["number"] = True
 
     def execute(self) -> str:
         string = ""
-        for index in range(self.__size):
+        for _ in range(self.__size):
             string += chr(self.__get_secure_char())
         return string
 
 
 def main(args: list):
     if len(args) > 0:
-        if args[0] == '--help' or args[0] == '-h':
+        if args[0] == "--help" or args[0] == "-h":
             help()
         else:
             params, values = ArgumentProcessor(args).process()
             if "size" in values:
                 generator = Genpass()
-                if '-es' in params or '--enable-symbols' in params:
-                    generator.enable('symbols')
-                if '-en' in params or '--enable-numbers' in params:
-                    generator.enable('numbers')
-                if '-eu' in params or '--enable-uppercase' in params:
-                    generator.enable('uppercase')
-                generator.set_size(int(values['size']))
+                if "-es" in params or "--enable-symbols" in params:
+                    generator.enable("symbols")
+                if "-en" in params or "--enable-numbers" in params:
+                    generator.enable("numbers")
+                if "-eu" in params or "--enable-uppercase" in params:
+                    generator.enable("uppercase")
+                generator.set_size(int(values["size"]))
                 lines = 1
                 if "lines" in values:
                     lines = int(values["lines"])
@@ -155,7 +164,7 @@ def main(args: list):
         error("Error: no arguments specified")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = sys.argv
     del args[0]
     init()
