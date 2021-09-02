@@ -27,6 +27,7 @@ def help():
     info("-eu     --enable-upper          Enable uppercase characters")
     info("-es     --enable-symbols        Enables ASCII symbol characters")
     info("size    size=n                  Sets the size of the string to generate")
+    info("lines   lines=n                 Sets the number of strings generated")
 
 
 class ArgumentProcessor:
@@ -140,6 +141,14 @@ def main(args: list):
                 if '-eu' in params or '--enable-uppercase' in params:
                     generator.enable('uppercase')
                 generator.set_size(int(values['size']))
+                lines = 1
+                if "lines" in values:
+                    lines = int(values["lines"])
+                if lines > 1:
+                    for _ in range(lines):
+                        success(generator.execute())
+                else:
+                    success(generator.execute())
             else:
                 error("Error: a valid size was not specified")
     else:
