@@ -55,19 +55,39 @@ class Genpass:
         # default size
         self.__types = {'lower': True, 'upper': False, 'symbol': False, 'number': False}
         self.__size = 10
+        self.__ranges = {}
+
+    def __regist_values(self, key, value):
+        """Logs a range only once in memory to avoid wasting processor cycles unnecessarily"""
+        self.__ranges[key] = value
+
+    def __is_registered(self, key) -> bool:
+        """Check if a range is registered"""
+        return key in self.__ranges
 
     def __generate_lower(self) -> str:
-        return choice(range(97, 123))
+        """Returns a lowercase character"""
+        if not self.__is_registered("lower"):
+            self.__regist_values("lower", range(97, 123))
+        return choice(self.__ranges["lower"])
 
     def __generate_upper(self) -> str:
-        return choice(range(65, 91))
+        """Returns a uppercase character"""
+        if not self.__is_registered("upper"):
+            self.__regist_values("upper", range(65, 91))
+        return choice(self.__ranges["upper"])
 
     def __generate_symbol(self) -> str:
-        symbol_list = [range(32, 48), range(58, 65), range(91, 97), range(123, 127)]
-        return choice(choice(symbol_list))
+        """Returns an ASCII symbol"""
+        if not self.__is_registered("symbol"):
+            self.__regist_values("symbol", [range(32, 48), range(58, 65), range(91, 97), range(123, 127)])
+        return choice(choice(self.__ranges["symbol"]))
 
     def __generate_number(self) -> str:
-        return choice(range(48, 58))
+        """Returns a number"""
+        if not self.__is_registered("number"):
+            self.__regist_values("number", range(48, 58))
+        return choice(self.__ranges["number"])
 
     def __get_secure_char(self) -> int:
         enabled = False
@@ -120,7 +140,6 @@ def main(args: list):
                 if '-eu' in params or '--enable-uppercase' in params:
                     generator.enable('uppercase')
                 generator.set_size(int(values['size']))
-                success(generator.execute())
             else:
                 error("Error: a valid size was not specified")
     else:
