@@ -8,7 +8,6 @@ try:
     from colorama import Fore, init
     color_module = True
 except:
-    print("Cannot load colors module")
     color_module = False
 
 def error(message):
