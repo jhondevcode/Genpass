@@ -1,24 +1,42 @@
 #!/usr/bin/python3
 
 import sys
-from colorama import Fore, init
 from random import choice
 
+color_module = False
+try:
+    from colorama import Fore, init
+    color_module = True
+except:
+    print("Cannot load colors module")
+    color_module = False
 
 def error(message):
-    print(f"{Fore.RED}{message}{Fore.RESET}")
+    if color_module:
+        print(f"{Fore.RED}{message}{Fore.RESET}")
+    else:
+        print(message)
 
 
 def info(message):
-    print(f"{Fore.CYAN}{message}{Fore.RESET}")
+    if color_module:
+        print(f"{Fore.CYAN}{message}{Fore.RESET}")
+    else:
+        print(message)
 
 
 def warning(message):
-    print(f"{Fore.YELLOW}{message}{Fore.RESET}")
+    if color_module:
+        print(f"{Fore.YELLOW}{message}{Fore.RESET}")
+    else:
+        print(message)
 
 
 def success(message):
-    print(f"{Fore.GREEN}{message}{Fore.RESET}")
+    if color_module:
+        print(f"{Fore.GREEN}{message}{Fore.RESET}")
+    else:
+        print(message)
 
 
 def help():
@@ -167,5 +185,6 @@ def main(args: list):
 if __name__ == "__main__":
     args = sys.argv
     del args[0]
-    init()
+    if color_module:
+        init()
     main(args)
